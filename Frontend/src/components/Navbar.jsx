@@ -8,7 +8,8 @@ export default function Navbar() {
       <Link to="/" className='hover:text-lg'>Home</Link>
       <Link to="/about">About</Link>
       <Link to="/about">Contact us</Link>
-      <Link to="/about">Contact us</Link>
+      <Link to="/about">hello</Link>
+
     </div>
   </nav>
   );
