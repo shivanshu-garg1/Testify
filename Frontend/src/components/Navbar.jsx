@@ -6,7 +6,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="container mx-auto px-6 py-4 flex justify-between items-center bg-slate-800 text-gray-100 shadow-teal-300 shadow-md">
+    <nav className="container mx-auto px-6 py-4 flex justify-between items-center bg-slate-800 text-gray-100 shadow-teal-900 shadow-md border-b-1 border-teal-300">
       {/* App Name */}
       <div className="text-xl font-bold text-teal-200 cursor-pointer relative group">
         Testify
