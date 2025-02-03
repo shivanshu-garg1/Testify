@@ -1,11 +1,12 @@
 import React from "react";
+
 export default function Home() {
   return (
-    <div className="bg-gray-900 text-teal-300 ">
-      <h1 className="text-center py-10 text-2xl sm:text-3xl md:text-4xl ">
+    <div className="bg-[#0d0225] max-h-screen text-purple-100 flex justify-center">
+      <div className="text-center text-1xl sm:text-3xl md:text-3xl font-[cursive] m-auto">
         Testify - Streamlined Test Management App
-      </h1>
-      <p className="text-center">This is the Home page content.</p>
+      </div>
+    
     </div>
   );
 }
