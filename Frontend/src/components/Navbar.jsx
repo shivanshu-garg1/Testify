@@ -6,13 +6,13 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="container mx-auto px-6 py-4 flex justify-between items-center bg-[#0d0225] text-purple-100 border-b-2 border-purple-950">
-      {/* App Name */}
+<nav className="fixed top-0 left-0 w-full px-6 py-4 flex justify-between items-center bg-[#0d0225] text-purple-100 border-b-2 border-purple-950 z-50">
+<Link to='/'>
       <div className="text-xl font-bold text-purple-100 cursor-pointer relative group">
         Testify
       </div>
-
-      {/* Desktop Menu */}
+      </Link>
+      
       <div className="hidden md:flex space-x-9 text-purple-100 text-md font-bold">
         <Link to="/" className="relative group">
           Home
@@ -26,18 +26,17 @@ export default function Navbar() {
           Contact Us
           <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-violet-100 transition-all group-hover:w-full"></span>
         </Link>
-        <Link to="/login" className="relative group">
-          Login
-          <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-violet-100 transition-all group-hover:w-full"></span>
-        </Link>
+
+       
       </div>
 
-      {/* Get Started Button */}
-      <div>
-        <button className="bg-violet-100 text-gray-900 px-4 py-2 rounded-lg hover:bg-violet-100 transition">
-          Get Started
-        </button>
-      </div>
+      
+      <Link to="/login">
+  <button className="bg-violet-100 text-gray-900 px-4 py-2 rounded-lg hover:bg-violet-100 transition">
+    Login
+  </button>
+</Link>
+     
 
       {/* Hamburger Menu */}
       <div className="md:hidden text-purple-100 cursor-pointer">

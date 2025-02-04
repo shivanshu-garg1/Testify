@@ -1,9 +1,8 @@
-import { motion } from "framer-motion";
-
-export default function HomePage() {
+// import { motion } from "framer-motion";
+export default function Landing() {
   return (
-    <div className="relative w-full h-screen overflow-hidden">
-      {/* Background Video Container */}
+<div className="relative w-full h-screen overflow-hidden pt-16">
+     
       <div className="absolute top-0 left-0 w-full h-full">
         <video
           autoPlay
@@ -16,9 +15,9 @@ export default function HomePage() {
         </video>
       </div>
 
-      {/* Hero Content */}
+      
       <div className="relative flex flex-col items-center justify-center h-full text-center text-white px-4">
-        <motion.div
+        <div
           initial={{ opacity: 5, y: -20 }}
           animate={{ opacity: 6, y: 0 }}
           transition={{ duration: 1.0 }}
@@ -33,7 +32,7 @@ export default function HomePage() {
           <button className="bg-teal-400 text-gray-800 px-4 py-2 rounded-lg hover:bg-teal-500 transition">
             Get Started
           </button>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
