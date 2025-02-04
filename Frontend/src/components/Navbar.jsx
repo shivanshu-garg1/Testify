@@ -32,7 +32,7 @@ export default function Navbar() {
 
       
       <Link to="/login">
-  <button className="bg-violet-100 text-gray-900 px-4 py-2 rounded-lg hover:bg-violet-100 transition">
+  <button className="bg-violet-200 text-gray-900 px-4 py-2 rounded-lg hover:bg-violet-100 transition">
     Login
   </button>
 </Link>
