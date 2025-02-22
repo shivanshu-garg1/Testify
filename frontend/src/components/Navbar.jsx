@@ -7,7 +7,7 @@ export default function Navbar({ logo, links }) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <nav className=" fixed top-0 left-0 w-full flex flex-wrap items-center justify-between px-10 py-4 bg-[#0d0225] text-purple-100 border-b-2 border-b-purple-100">
+      <nav className=" w-full flex flex-wrap items-center justify-between px-10 py-4 bg-[#0d0225] text-purple-100 border-b-2 border-b-purple-100">
         {/* Logo */}
         <div className="cursor-pointer text-2xl font-semibold">{logo}</div>
         {/* DeskTop Menu */}

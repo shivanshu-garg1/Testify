@@ -5,6 +5,8 @@ import Navbar from "./components/Navbar";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Landing from "./Pages/Landing";
+import Login from "./Pages/Login";
+import Signup from "./Pages/Signup";
 
 export default function App() {
   const navLinks = [
@@ -12,6 +14,7 @@ export default function App() {
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
     { name: "Login", path: "/login" },
+  
   ];
 
   return (
@@ -21,6 +24,9 @@ export default function App() {
         <Route path="/" element={<Landing  />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        
       </Routes>
     </>
   );
