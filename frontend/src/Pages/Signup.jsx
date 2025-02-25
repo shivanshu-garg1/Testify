@@ -1,9 +1,5 @@
 import React from "react";
-
-
-
 const Signup = () => {
-  
   return (
     <div className="relative w-full h-screen flex items-center justify-center  bg-[#0d0225]">
            
