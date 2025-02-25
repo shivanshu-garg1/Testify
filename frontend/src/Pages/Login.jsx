@@ -5,11 +5,11 @@ const Login = () => {
  
 
   return (
-    <div className="relative w-full h-screen flex items-center justify-center bg-[#0d0225] ">
+    <div className="relative w-full h-screen flex items-center justify-center bg-[#deceff] ">
       
 
       {/* Login Form */}
-      <div className="relative z-10 bg-[#0d0225] text-purple-100 bg-opacity-90 p-10 rounded-xl border-2 border-purple-100 shadow-lg  w-[90%] max-w-md">
+      <div className="relative z-10 bg-white text-purple-100 bg-opacity-90 p-10 rounded-xl  shadow-lg  w-[90%] max-w-md">
         <h2 className="text-2xl  font-bold text-center mb-5">Login</h2>
         <form  className="space-y-5">
           <div>
