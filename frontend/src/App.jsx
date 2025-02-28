@@ -9,17 +9,11 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 
 export default function App() {
-  const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    { name: "Contact", path: "/contact" },
-    { name: "Login", path: "/login" },
   
-  ];
 
   return (
     <>
-      <Navbar logo="Testify" links={navLinks} />
+      
       <Routes>
         <Route path="/" element={<Landing  />} />
         <Route path="/about" element={<About />} />
