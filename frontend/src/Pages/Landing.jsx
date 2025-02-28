@@ -1,4 +1,3 @@
-import React from "react";
 import V1 from "../assets/video.mp4";
 import Button from "../components/Button";
 export default function Home() {
