@@ -1,14 +1,15 @@
 import React from "react";
-// import Navbar from "../components/Navbar";
+
 import {Link} from 'react-router-dom';
+
 const Login = () => {
   return (
     <>
     
       <div className="relative w-full h-screen flex items-center justify-center  bg-white ">
         {/* Login Form */}
-        <div className="relative z-10 bg-white text-black bg-opacity-90 p-10 rounded-xl  shadow-xl  w-[90%] max-w-md">
-          <h2 className="text-2xl  font-bold text-center mb-5">Login</h2>
+        <div className="relative z-10 bg-white text-black bg-opacity-90 p-10 rounded-xl  shadow-purple-600 shadow-2xl  w-[90%] max-w-md">
+          <h2 className="text-2xl  font-bold text-center mb-5 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600">Login</h2>
           <form className="space-y-5">
             <div>
               <label htmlFor="email" className=" block mb-1">

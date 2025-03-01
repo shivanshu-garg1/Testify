@@ -14,7 +14,7 @@ export default function Navbar({logo}) {
   ];
 
   return (
-    <nav className="fixed w-full flex flex-wrap items-center justify-between px-10 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-purple-100 border-b-2 border-b-purple-100 z-50">
+    <nav className="fixed w-full flex flex-wrap items-center justify-between px-10 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white border-b-2 border-b-purple-100 z-50">
       {/* Logo */}
       <div className="cursor-pointer text-2xl font-semibold">{logo}</div>
 
@@ -22,7 +22,7 @@ export default function Navbar({logo}) {
       <ul className="hidden md:flex gap-10">
         {navLinks.map((link, index) => (
           <li key={index}>
-            <Link to={link.path} className="hover:text-purple-300">
+            <Link to={link.path} className="hover:font-semibold">
               {link.name}
             </Link>
           </li>
