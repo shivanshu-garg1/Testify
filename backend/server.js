@@ -7,7 +7,7 @@ const authRoutes = require('./routes/authRoutes.js');
 const app = express();
 const PORT = 3000;
 app.use(express.json());
-app.use(cors({ origin: "https://your-frontend.vercel.app" }));
+app.use(cors({ origin: "https://testify-three.vercel.app", credentials: true }));
 
 
 
