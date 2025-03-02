@@ -36,14 +36,15 @@ router.post('/login',async(req,res)=>{
         const {email,password} = req.body;
         const user = await User.findOne({email});
         if(!user){
-            return res.status(400).json({error:"Invalid details"});
+            return res.status(400).json({error:"Email not Registered"});
         }
         const isMatch = await bcrypt.compare(password,user.password);
         if(!isMatch){
-            return res.status(400).json({error:"Invalid details"});
+            return res.status(400).json({error:"Password is incorrect"});
         }
-        const token = jwt.sign({ id: user._id }, "MySecret", { expiresIn: "10s" });
-        res.json({ message: "Login successful!", token });
+        const expiresIn =  24 * 60 * 60;
+        const token = jwt.sign({ id: user._id,role:user.role }, "MySecret", { expiresIn: expiresIn });
+        res.json({ message: "Login successful!", token, expiresIn: expiresIn,role:user.role  });
 
     }
     catch (error) {
