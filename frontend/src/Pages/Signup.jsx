@@ -17,8 +17,7 @@ const Signup = () => {
   const handelSubmit = async (e) => {
     e.preventDefault();
     try {
-      const BASE_URL = "https://testify-server-mocha.vercel.app/api"; 
-      const res = await fetch(`${BASE_URL}/auth/signup`, {
+      const res = await fetch("http://localhost:3000/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
