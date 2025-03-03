@@ -22,7 +22,7 @@
           return;
         }
         
-        alert("Login successful");
+        // alert("Login successful");
 
       
       localStorage.setItem("token", data.token);

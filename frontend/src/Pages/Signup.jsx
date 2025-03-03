@@ -26,7 +26,7 @@ const Signup = () => {
       if (!res.ok) {
         throw new Error(data.message);
       }
-      alert("User Registered Successfully");
+      // alert("User Registered Successfully");
       navigate("/login");
     } catch (error) {
       alert(error.message || "Signup failed");
