@@ -4,6 +4,7 @@ import image1 from "../assets/img1.jpeg"
 import image2 from "../assets/img2.avif"
 import Navbar from '../components/Navbar'
 import {Link} from 'react-router-dom';
+import Footer from '../components/Footer';
 export default function About() {
   const [activeFeature, setActiveFeature] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -240,6 +241,7 @@ export default function About() {
         </div>
       </div>
     </div>
+    <Footer></Footer>
     </>
   );
 }
