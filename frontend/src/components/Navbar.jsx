@@ -3,19 +3,26 @@ import { Link } from "react-router-dom";
 import Button from "./Button";
 import { X, Menu } from "lucide-react";
 
-export default function Navbar({ logo, links = [] }) {
+export default function Navbar({logo}) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+    { name: "Contact", path: "/contact" },
+    { name: "Login", path: "/login" },
+  ];
+
   return (
-    <nav className="fixed w-full flex flex-wrap items-center justify-between px-10 py-4 bg-[#0d0225] text-purple-100 border-b-2 border-b-purple-100 z-50">
+    <nav className="fixed w-full flex flex-wrap items-center justify-between px-10 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white border-b-2 border-b-purple-100 z-50">
       {/* Logo */}
       <div className="cursor-pointer text-2xl font-semibold">{logo}</div>
 
       {/* Desktop Menu */}
       <ul className="hidden md:flex gap-10">
-        {links.map((link, index) => (
+        {navLinks.map((link, index) => (
           <li key={index}>
-            <Link to={link.path} className="hover:text-purple-300">
+            <Link to={link.path} className="hover:font-semibold">
               {link.name}
             </Link>
           </li>
@@ -34,15 +41,15 @@ export default function Navbar({ logo, links = [] }) {
 
       {/* Mobile Menu */}
       <div
-        className={`absolute top-16 left-0 w-full bg-[#0d0225] ${
+        className={`absolute top-16 left-0 w-full bg-gradient-to-r from-purple-600 to-indigo-600 ${
           isOpen ? "block" : "hidden"
         } md:hidden`}
       >
-        <ul className="flex flex-col items-center">
-          {links.map((link, index) => (
+        <ul className="flex flex-col px-8">
+          {navLinks.map((link, index) => (
             <li
               key={index}
-              className="m-4 hover:border-b-2 hover:border-b-purple-100"
+              className="m-4  hover:font-bold"
             >
               <Link to={link.path} onClick={() => setIsOpen(false)}>
                 {link.name}
