@@ -25,7 +25,11 @@
         // alert("Login successful");
 
       
-      localStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("name",data.name);
+        localStorage.setItem("role",data.role);
+        
+
 
       
       let role = data.role;

@@ -7,8 +7,9 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import StudentDashboard from "./Pages/StudentDashboard";
 import TeacherDashboard from "./Pages/TeacherDashboard"; 
-import Sidebar from "./components/Sidebar";
+// import Sidebar from "./components/Sidebar";
 import DashboardLayout from "./layouts/DashboardLayout";
+import CreateTest from "./Pages/CreateTest";
 
 export default function App() {
   // const location = useLocation();
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/" element={<DashboardLayout />}>
         <Route path="student" element={<StudentDashboard />} />
         <Route path="teacher" element={<TeacherDashboard />} />
+        <Route path="/teacher/create-test" element={<CreateTest />} />
       </Route>
       </Routes>
      

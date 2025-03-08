@@ -43,8 +43,8 @@ router.post('/login',async(req,res)=>{
             return res.status(400).json({error:"Password is incorrect"});
         }
         const expiresIn =  24 * 60 * 60;
-        const token = jwt.sign({ id: user._id,role:user.role }, "MySecret", { expiresIn: expiresIn });
-        res.json({ message: "Login successful!", token, expiresIn: expiresIn,role:user.role  });
+        const token = jwt.sign({ id: user._id,role:user.role,name:user.name }, "MySecret", { expiresIn: expiresIn });
+        res.json({ message: "Login successful!", token, expiresIn: expiresIn,role:user.role,name:user.name  });
 
     }
     catch (error) {
