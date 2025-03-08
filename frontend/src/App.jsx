@@ -10,6 +10,7 @@ import TeacherDashboard from "./Pages/TeacherDashboard";
 // import Sidebar from "./components/Sidebar";
 import DashboardLayout from "./layouts/DashboardLayout";
 import CreateTest from "./Pages/CreateTest";
+import SeeTests from "./Pages/SeeTest";
 
 export default function App() {
   // const location = useLocation();
@@ -31,6 +32,7 @@ export default function App() {
         <Route path="student" element={<StudentDashboard />} />
         <Route path="teacher" element={<TeacherDashboard />} />
         <Route path="/teacher/create-test" element={<CreateTest />} />
+        <Route path="/teacher/see-test" element={<SeeTests />} />
       </Route>
       </Routes>
      
