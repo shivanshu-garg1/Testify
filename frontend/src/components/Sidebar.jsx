@@ -6,6 +6,7 @@ import {
   FaCog,
   FaSignOutAlt,
   FaBook,
+  FaBookOpen,
   FaChartBar,
   FaChevronRight,
   FaClipboardCheck
@@ -14,7 +15,7 @@ import {
 const menuItems = {
   student: [
     { name: "Dashboard", path: "/student", icon: <FaHome /> },
-    { name: "Profile", path: "/student/profile", icon: <FaUser /> },
+    { name: "Profile", path: "/student/assigned-tests", icon: <FaBookOpen /> },
     { name: "Settings", path: "/student/settings", icon: <FaCog /> },
   ],
   teacher: [

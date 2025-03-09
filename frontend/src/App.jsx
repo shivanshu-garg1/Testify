@@ -11,6 +11,8 @@ import TeacherDashboard from "./Pages/TeacherDashboard";
 import DashboardLayout from "./layouts/DashboardLayout";
 import CreateTest from "./Pages/CreateTest";
 import SeeTests from "./Pages/SeeTest";
+import AssignedTasks from "./Pages/AssignedTasks";
+import TestPage from "./Pages/TestPage";
 
 export default function App() {
   // const location = useLocation();
@@ -30,6 +32,8 @@ export default function App() {
 
         <Route path="/" element={<DashboardLayout />}>
         <Route path="student" element={<StudentDashboard />} />
+        <Route path="/student/assigned-tests" element={<AssignedTasks />} />
+        <Route path="/test/:testId" element={<TestPage />} />
         <Route path="teacher" element={<TeacherDashboard />} />
         <Route path="/teacher/create-test" element={<CreateTest />} />
         <Route path="/teacher/see-test" element={<SeeTests />} />

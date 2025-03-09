@@ -12,7 +12,7 @@ const testSchema = new mongoose.Schema({
       correctAnswer: { type: String, required: true },
     },
   ],
-  published: { type: Boolean, default: false }, // New field for publishing
+  published: { type: Boolean, default: false },
 });
 
 const Test = mongoose.model("Test", testSchema);

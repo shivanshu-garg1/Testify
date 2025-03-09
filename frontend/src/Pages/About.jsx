@@ -88,7 +88,7 @@ export default function About() {
             <p className="text-gray-600 mb-6">
               Welcome to Testify, a revolutionary test management platform designed to simplify exam creation, administration, and evaluation. Built for educators and students alike, Testify enhances the testing experience with automation, real-time tracking, and AI-driven insights.
             </p>
-            <button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-600 hover:to-indigo-600 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105">
+            <button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105">
               Learn More
             </button>
           </div>
