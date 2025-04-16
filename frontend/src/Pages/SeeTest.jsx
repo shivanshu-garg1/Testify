@@ -7,7 +7,7 @@ export default function SeeTest() {
     fetchTests();
   }, []);
 
-  // Fetch all tests
+  
   const fetchTests = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/tests/teacher/see-tests");
@@ -18,7 +18,7 @@ export default function SeeTest() {
     }
   };
 
-  // Publish a test
+ 
   const handlePublish = async (testId) => {
     try {
       const response = await fetch("http://localhost:3000/api/tests/teacher/publish-test", {
@@ -40,11 +40,11 @@ export default function SeeTest() {
     }
   };
 
-   // Unpublish a test
+   
    const handleUnPublish = async (testId) => {
     try {
       const response = await fetch("http://localhost:3000/api/tests/teacher/unPublish-test", {
-        method: "PATCH", // Fixed method from POST to PATCH
+        method: "PATCH", 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ testId }),
       });
@@ -63,7 +63,7 @@ export default function SeeTest() {
   };
 
 
-  // Delete a test
+  
   const handleDelete = async (testId) => {
     if (!window.confirm("Are you sure you want to delete this test?")) return;
 
@@ -134,3 +134,5 @@ export default function SeeTest() {
     </div>
   );
 }
+
+

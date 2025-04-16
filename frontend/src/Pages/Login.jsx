@@ -28,7 +28,8 @@ const Login = () => {
       localStorage.setItem("token", data.token);
       localStorage.setItem("name", data.name);
       localStorage.setItem("role", data.role);
-      localStorage.setItem("email",data.email);
+      localStorage.setItem("email", data.email);
+      localStorage.setItem("batch", data.batch);
 
       let role = data.role;
       if (role === "student") {

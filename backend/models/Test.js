@@ -13,6 +13,7 @@ const testSchema = new mongoose.Schema({
     },
   ],
   published: { type: Boolean, default: false },
+  batch: { type: String, required: true },
 });
 
 const Test = mongoose.model("Test", testSchema);

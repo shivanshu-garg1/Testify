@@ -13,8 +13,25 @@ export default function TestPage() {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
+    enableFullScreen();
     fetchTestDetails();
+
+    return () => {
+      exitFullScreen();
+    };
   }, []);
+
+  const enableFullScreen = () => {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    }
+  };
+
+  const exitFullScreen = () => {
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  };
 
   const fetchTestDetails = async () => {
     try {
@@ -73,6 +90,7 @@ export default function TestPage() {
     setSubmitted(true);
     console.log("Submitting answers:", answers);
     alert("Test submitted successfully!");
+    exitFullScreen(); // Exit fullscreen when the test is submitted
     setTimeout(() => navigate("/student/assigned-tests"), 2000);
   };
 

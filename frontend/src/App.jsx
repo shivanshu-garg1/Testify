@@ -18,6 +18,9 @@ export default function App() {
   // const location = useLocation();
   // const showSidebar = location.pathname === "/student" || location.pathname === "/teacher";
 
+
+
+  
   return (
     <div className="app-container">
       {/* {showSidebar && <Sidebar />} */}

@@ -7,6 +7,7 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
     role: "",
+    batch: "",
   });
   const navigate = useNavigate();
 
@@ -17,10 +18,15 @@ const Signup = () => {
   const handelSubmit = async (e) => {
     e.preventDefault();
     try {
+      const payload = { ...form };
+      if (form.role !== "student") {
+        delete payload.batch;
+      }
+
       const res = await fetch("http://localhost:3000/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -134,6 +140,29 @@ const Signup = () => {
               <option value="teacher">Teacher</option>
             </select>
           </div>
+          {form.role === "student" && (
+            <div>
+              <label
+                htmlFor="batch"
+                className="block mb-1 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 font-semibold"
+              >
+                Batch
+              </label>
+              <select
+                name="batch"
+                className="w-full p-2 border border-gray-300 rounded-md text-black focus:outline-none focus:border-purple-500"
+                value={form.batch}
+                onChange={handelChange}
+              >
+                <option value="">Select Batch</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+              </select>
+            </div>
+          )}
 
           <button
             type="submit"

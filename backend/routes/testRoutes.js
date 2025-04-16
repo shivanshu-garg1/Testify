@@ -4,7 +4,7 @@ const TestAttempt = require("../models/TestAttempt");
 
 const router = express.Router();
 
-// ✅ Create multiple tests
+
 router.post("/teacher/create-test", async (req, res) => {
   try {
     const testsData = req.body.tests;
@@ -26,7 +26,7 @@ router.post("/teacher/create-test", async (req, res) => {
   }
 });
 
-// ✅ Publish a test
+
 router.patch("/teacher/publish-test", async (req, res) => {
   try {
     const { testId } = req.body;
@@ -51,7 +51,7 @@ router.patch("/teacher/publish-test", async (req, res) => {
   }
 });
 
-// ✅ Unpublish a test (Fixed)
+
 router.patch("/teacher/unPublish-test", async (req, res) => {
   try {
     const { testId } = req.body;
@@ -66,7 +66,6 @@ router.patch("/teacher/unPublish-test", async (req, res) => {
 });
 
 
-// ✅ Delete a test (using DELETE instead of POST)
 router.delete("/teacher/delete-test", async (req, res) => {
   try {
     const { testId } = req.body;
@@ -86,7 +85,6 @@ router.delete("/teacher/delete-test", async (req, res) => {
   }
 });
 
-// ✅ Fetch all tests (for teacher)
 router.get("/teacher/see-tests", async (req, res) => {
   try {
     const tests = await Test.find();
@@ -97,7 +95,6 @@ router.get("/teacher/see-tests", async (req, res) => {
   }
 });
 
-// ✅ Fetch published tests (for students)
 router.get("/student/see-published-tests", async (req, res) => {
   try {
     const publishedTests = await Test.find({ published: true });
@@ -108,7 +105,6 @@ router.get("/student/see-published-tests", async (req, res) => {
   }
 });
 
-// ✅ Start a test attempt
 router.post("/start-test", async (req, res) => {
   try {
     const { testId, studentId } = req.body;
@@ -116,17 +112,14 @@ router.post("/start-test", async (req, res) => {
       return res.status(400).json({ message: "Test ID and Student ID are required" });
     }
 
-    // Check if the test exists
     const test = await Test.findById(testId);
     if (!test) return res.status(404).json({ message: "Test not found" });
 
-    // Check if the student has already started the test
     const existingAttempt = await TestAttempt.findOne({ studentId, testId });
     if (existingAttempt) {
       return res.json({ message: "Test already started", attemptId: existingAttempt._id });
     }
 
-    // Create new attempt
     const attempt = new TestAttempt({
       testId,
       studentId,
@@ -163,7 +156,7 @@ router.post("/submit-test", async (req, res) => {
 
     const attempt = await TestAttempt.findByIdAndUpdate(
       attemptId,
-      { status: "done" }, // ✅ Mark test as done
+      { status: "done" }, 
       { new: true, runValidators: true }
     );
 

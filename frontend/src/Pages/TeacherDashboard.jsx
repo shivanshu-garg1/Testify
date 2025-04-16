@@ -29,8 +29,7 @@ export default function TeacherDashboard() {
         </p>
         <div className="w-full">
           <div className="flex flex-col w-full mb-10 sm:flex-row gap-5">
-            
-              <div className="w-full sm:w-1/2">
+            <div className="w-full sm:w-1/2">
               <Link to="/teacher/create-test">
                 <div className="relative h-full ml-0 sm:mr-5">
                   <span className="absolute top-0 left-0 w-full h-full mt-1 ml-1 bg-indigo-500 rounded-lg"></span>
@@ -43,9 +42,8 @@ export default function TeacherDashboard() {
                     </p>
                   </div>
                 </div>
-                </Link>
-              </div>
-            
+              </Link>
+            </div>
 
             <div className="w-full sm:w-1/2">
               <div className="relative h-full ml-0 sm:mr-5">
