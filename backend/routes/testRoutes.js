@@ -1,20 +1,30 @@
 const express = require("express");
 const Test = require("../models/Test.js");
 const TestAttempt = require("../models/TestAttempt");
+const authenticateToken = require('../middlewares/authMiddleware');
+
+
+
 
 const router = express.Router();
 
 
-router.post("/teacher/create-test", async (req, res) => {
+router.post("/teacher/create-test",  authenticateToken, async (req, res) => {
   try {
     const testsData = req.body.tests;
+    const teacherId = req.user.id;
     if (!Array.isArray(testsData) || testsData.length === 0) {
       return res.status(400).json({ error: "Invalid request, tests should be an array" });
     }
 
     const createdTests = await Test.insertMany(
-      testsData.map(test => ({ ...test, published: false }))
+      testsData.map(test => ({
+        ...test,
+        published: false,
+        createdBy: teacherId,
+      }))
     );
+    
 
     res.status(201).json({
       message: `${createdTests.length} tests created successfully!`,
@@ -27,7 +37,7 @@ router.post("/teacher/create-test", async (req, res) => {
 });
 
 
-router.patch("/teacher/publish-test", async (req, res) => {
+router.patch("/teacher/publish-test", authenticateToken, async (req, res) => {
   try {
     const { testId } = req.body;
     if (!testId) {
@@ -52,7 +62,7 @@ router.patch("/teacher/publish-test", async (req, res) => {
 });
 
 
-router.patch("/teacher/unPublish-test", async (req, res) => {
+router.patch("/teacher/unPublish-test", authenticateToken, async (req, res) => {
   try {
     const { testId } = req.body;
     const updatedTest = await Test.findByIdAndUpdate(testId, { published: false }, { new: true });
@@ -66,7 +76,7 @@ router.patch("/teacher/unPublish-test", async (req, res) => {
 });
 
 
-router.delete("/teacher/delete-test", async (req, res) => {
+router.delete("/teacher/delete-test", authenticateToken, async (req, res) => {
   try {
     const { testId } = req.body;
     if (!testId) {
@@ -85,27 +95,41 @@ router.delete("/teacher/delete-test", async (req, res) => {
   }
 });
 
-router.get("/teacher/see-tests", async (req, res) => {
+router.get("/teacher/see-tests", authenticateToken, async (req, res) => {
   try {
-    const tests = await Test.find();
-    res.json(tests);
+    if (req.user.role !== "teacher") {
+      return res.status(403).json({ message: "Access denied. Only teachers can view this." });
+    }
+
+    const teacherId = req.user.id;
+    const tests = await Test.find({ createdBy: teacherId });
+
+    res.json({ tests });
   } catch (error) {
     console.error("Error fetching tests:", error);
-    res.status(500).json({ error: error.message || "Failed to fetch tests." });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
-router.get("/student/see-published-tests", async (req, res) => {
+
+router.get("/student/see-published-tests", authenticateToken, async (req, res) => {
   try {
-    const publishedTests = await Test.find({ published: true });
+    const { role, batch } = req.user;
+
+    if (role !== "student") {
+      return res.status(403).json({ message: "Only students can access this route" });
+    }
+
+    const publishedTests = await Test.find({ published: true, batch: batch });
+
     res.json(publishedTests);
   } catch (error) {
     console.error("Error fetching published tests:", error);
-    res.status(500).json({ error: error.message || "Error fetching tests" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
-router.post("/start-test", async (req, res) => {
+router.post("/start-test", authenticateToken, async (req, res) => {
   try {
     const { testId, studentId } = req.body;
     if (!testId || !studentId) {
@@ -133,7 +157,7 @@ router.post("/start-test", async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message || error });
   }
 });
-router.get("/:testId", async (req, res) => {
+router.get("/:testId", authenticateToken, async (req, res) => {
   try {
     const test = await Test.findById(req.params.testId);
 
@@ -147,7 +171,7 @@ router.get("/:testId", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-router.post("/submit-test", async (req, res) => {
+router.post("/submit-test", authenticateToken, async (req, res) => {
   try {
     const { attemptId } = req.body;
     if (!attemptId) {

@@ -5,16 +5,22 @@ export default function AssignedTask() {
   const [tests, setTests] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const studentEmail = localStorage.getItem("email"); // Student ID as email
+  const studentEmail = localStorage.getItem("email"); 
 
   useEffect(() => {
     fetchPublishedTests();
   }, []);
-
+const token = localStorage.getItem('token');
   const fetchPublishedTests = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/tests/student/see-published-tests"
+        "http://localhost:3000/api/tests/student/see-published-tests",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        }
       );
       if (!response.ok) throw new Error("Failed to fetch tests");
       const data = await response.json();
@@ -37,7 +43,7 @@ export default function AssignedTask() {
         "http://localhost:3000/api/tests/start-test",
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json","Authorization": `Bearer ${token}` },
           body: JSON.stringify({ testId, studentId: studentEmail }), // Using email as ID
         }
       );

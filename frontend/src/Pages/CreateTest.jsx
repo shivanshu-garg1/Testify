@@ -7,7 +7,7 @@ export default function CreateTest() {
     subject: "",
     date: "",
     duration: "",
-    batch: "", // Added batch field
+    batch: "",
   });
 
   const [questions, setQuestions] = useState([]);
@@ -39,7 +39,9 @@ export default function CreateTest() {
         i === qIndex
           ? {
               ...q,
-              options: q.options.map((opt, j) => (j === oIndex ? value : opt)),
+              options: q.options.map((opt, j) =>
+                j === oIndex ? value : opt
+              ),
             }
           : q
       )
@@ -48,7 +50,9 @@ export default function CreateTest() {
 
   const updateCorrectAnswer = (qIndex, value) => {
     setQuestions((prev) =>
-      prev.map((q, i) => (i === qIndex ? { ...q, correctAnswer: value } : q))
+      prev.map((q, i) =>
+        i === qIndex ? { ...q, correctAnswer: value } : q
+      )
     );
   };
 
@@ -76,29 +80,47 @@ export default function CreateTest() {
       };
       reader.readAsText(uploadedFile);
     } else if (uploadedFile?.type === "application/pdf") {
-      alert(
-        "PDF parsing not yet implemented. Please upload a JSON file for now."
-      );
+      alert("PDF parsing not yet implemented. Please upload a JSON file.");
     } else {
       alert("Unsupported file type. Please upload a JSON or PDF file.");
     }
   };
 
   const handleSubmit = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("Unauthorized! Please login first.");
+      return;
+    }
+
     try {
       const response = await fetch(
         "http://localhost:3000/api/tests/teacher/create-test",
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ tests: [{ ...testDetails, questions }] }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            tests: [{ ...testDetails, questions }],
+          }),
         }
       );
 
       const data = await response.json();
       if (response.ok) {
-        alert(`${data.message}`);
-        navigate("/teacher/see-test");
+        alert(data.message);
+        setTestDetails({
+          testTitle: "",
+          subject: "",
+          date: "",
+          duration: "",
+          batch: "",
+        });
+        setQuestions([]);
+        setFile(null);
       } else {
         alert(data.error || "Failed to create test.");
       }
@@ -125,7 +147,6 @@ export default function CreateTest() {
               value={testDetails.testTitle}
               onChange={handleInputChange}
             />
-
             <input
               type="text"
               name="subject"
@@ -134,7 +155,6 @@ export default function CreateTest() {
               value={testDetails.subject}
               onChange={handleInputChange}
             />
-
             <input
               type="date"
               name="date"
@@ -142,7 +162,6 @@ export default function CreateTest() {
               value={testDetails.date}
               onChange={handleInputChange}
             />
-
             <input
               type="number"
               name="duration"
@@ -151,8 +170,6 @@ export default function CreateTest() {
               value={testDetails.duration}
               onChange={handleInputChange}
             />
-
-            {/* Batch Selection */}
             <select
               name="batch"
               className="border border-purple-600 p-2 rounded"
@@ -196,7 +213,6 @@ export default function CreateTest() {
                 value={q.question}
                 onChange={(e) => updateQuestion(qIndex, e.target.value)}
               />
-
               <div className="grid grid-cols-2 gap-2 mt-2">
                 {q.options.map((option, oIndex) => (
                   <input
@@ -211,11 +227,12 @@ export default function CreateTest() {
                   />
                 ))}
               </div>
-
               <select
                 className="border border-purple-600 p-2 mt-2 w-full rounded"
                 value={q.correctAnswer}
-                onChange={(e) => updateCorrectAnswer(qIndex, e.target.value)}
+                onChange={(e) =>
+                  updateCorrectAnswer(qIndex, e.target.value)
+                }
               >
                 <option value="">Select Correct Answer</option>
                 {q.options.map((option, oIndex) => (
@@ -224,7 +241,6 @@ export default function CreateTest() {
                   </option>
                 ))}
               </select>
-
               <button
                 className="text-red-500 mt-2"
                 onClick={() => removeQuestion(qIndex)}

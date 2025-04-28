@@ -32,10 +32,15 @@ export default function TestPage() {
       document.exitFullscreen();
     }
   };
+  const token = localStorage.getItem("token");  
 
   const fetchTestDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/tests/${testId}`);
+      const response = await fetch(`http://localhost:3000/api/tests/${testId}`,{
+        headers: {
+          "Authorization": `Bearer ${token}`
+        },
+      });
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }

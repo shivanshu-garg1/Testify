@@ -3,31 +3,47 @@ import { useEffect, useState } from "react";
 export default function SeeTest() {
   const [tests, setTests] = useState([]);
 
-  useEffect(() => {
-    fetchTests();
-  }, []);
+  const token = localStorage.getItem("token");
 
-  
+  useEffect(() => {
+    if (token) fetchTests();
+  }, [token]);
+
   const fetchTests = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/tests/teacher/see-tests");
+      const response = await fetch("http://localhost:3000/api/tests/teacher/see-tests", {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        },
+      });
+
       const data = await response.json();
-      setTests(data);
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to fetch tests");
+      }
+
+      // 👇 Fix applied here
+      setTests(data.tests || []);
     } catch (error) {
       console.error("Error fetching tests:", error);
+      alert(error.message || "Something went wrong.");
     }
   };
 
- 
   const handlePublish = async (testId) => {
     try {
       const response = await fetch("http://localhost:3000/api/tests/teacher/publish-test", {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify({ testId }),
       });
 
       const data = await response.json();
+
       if (response.ok) {
         alert("Test Published Successfully!");
         fetchTests();
@@ -40,41 +56,43 @@ export default function SeeTest() {
     }
   };
 
-   
-   const handleUnPublish = async (testId) => {
+  const handleUnPublish = async (testId) => {
     try {
-      const response = await fetch("http://localhost:3000/api/tests/teacher/unPublish-test", {
-        method: "PATCH", 
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ testId }),
+      const response = await fetch("http://localhost:3000/api/tests/teacher/see-tests", {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        },
       });
 
       const data = await response.json();
-      if (response.ok) {
-        alert("Test Unpublished Successfully!");
-        fetchTests();
-      } else {
-        alert(data.error || "Failed to unpublish test.");
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to fetch tests");
       }
+
+      // 👇 Already correctly handled here
+      setTests(data.tests || []);
     } catch (error) {
-      console.error("Error unpublishing test:", error);
-      alert("Something went wrong.");
+      console.error("Error fetching tests:", error);
+      alert(error.message || "Something went wrong.");
     }
   };
 
-
-  
   const handleDelete = async (testId) => {
     if (!window.confirm("Are you sure you want to delete this test?")) return;
 
     try {
       const response = await fetch("http://localhost:3000/api/tests/teacher/delete-test", {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify({ testId }),
       });
 
       const data = await response.json();
+
       if (response.ok) {
         alert("Test Deleted Successfully!");
         fetchTests();
@@ -92,7 +110,7 @@ export default function SeeTest() {
       <div className="container max-w-screen-lg mx-auto">
         <h2 className="text-2xl font-bold text-purple-600 mb-4">All Tests</h2>
 
-        {tests.length === 0 ? (
+        {!Array.isArray(tests) || tests.length === 0 ? (
           <p>No tests available.</p>
         ) : (
           tests.map((test) => (
@@ -101,6 +119,7 @@ export default function SeeTest() {
               <p><strong>Subject:</strong> {test.subject}</p>
               <p><strong>Date:</strong> {test.date}</p>
               <p><strong>Duration:</strong> {test.duration} mins</p>
+              <p><strong>For Batch:</strong> {test.batch}</p>
               <p><strong>Status:</strong> {test.published ? "Published" : "Unpublished"}</p>
 
               <div className="flex gap-2 mt-2">
@@ -119,7 +138,7 @@ export default function SeeTest() {
                     Unpublish
                   </button>
                 )}
-                
+
                 <button
                   className="bg-red-500 text-white font-semibold px-4 py-2 rounded"
                   onClick={() => handleDelete(test._id)}
@@ -134,5 +153,3 @@ export default function SeeTest() {
     </div>
   );
 }
-
-

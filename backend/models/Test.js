@@ -14,6 +14,12 @@ const testSchema = new mongoose.Schema({
   ],
   published: { type: Boolean, default: false },
   batch: { type: String, required: true },
+
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 
 const Test = mongoose.model("Test", testSchema);
