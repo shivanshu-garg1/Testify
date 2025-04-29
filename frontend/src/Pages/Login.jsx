@@ -24,12 +24,14 @@ const Login = () => {
       }
 
       // alert("Login successful");
+      console.log(data);
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("name", data.name);
       localStorage.setItem("role", data.role);
       localStorage.setItem("email", data.email);
       localStorage.setItem("batch", data.batch);
+      localStorage.setItem("studentId", data.id);
 
       let role = data.role;
       if (role === "student") {

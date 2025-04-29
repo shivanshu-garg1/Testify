@@ -5,12 +5,12 @@ export default function AssignedTask() {
   const [tests, setTests] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const studentEmail = localStorage.getItem("email"); 
+  const studentEmail = localStorage.getItem("email");
 
   useEffect(() => {
     fetchPublishedTests();
   }, []);
-const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const fetchPublishedTests = async () => {
     try {
       const response = await fetch(
@@ -18,7 +18,7 @@ const token = localStorage.getItem('token');
         {
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -33,6 +33,8 @@ const token = localStorage.getItem('token');
   };
 
   const startTest = async (testId) => {
+    const studentId = localStorage.getItem("studentId");
+
     try {
       if (!studentEmail) {
         alert("Student email not found. Please log in again.");
@@ -43,12 +45,16 @@ const token = localStorage.getItem('token');
         "http://localhost:3000/api/tests/start-test",
         {
           method: "POST",
-          headers: { "Content-Type": "application/json","Authorization": `Bearer ${token}` },
-          body: JSON.stringify({ testId, studentId: studentEmail }), // Using email as ID
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ testId,studentId }), 
         }
       );
 
       const data = await response.json();
+      console.log(data);
       if (response.ok) {
         alert("Test Started Successfully!");
         navigate(`/test/${testId}`);
@@ -83,21 +89,24 @@ const token = localStorage.getItem('token');
                 <strong>Subject:</strong> {test.subject}
               </p>
               <p>
-                <strong>Date:</strong> {new Date(test.date).toLocaleDateString()}
+                <strong>Date:</strong>{" "}
+                {new Date(test.date).toLocaleDateString()}
               </p>
               <p>
                 <strong>Duration:</strong> {test.duration} mins
               </p>
               <p className="text-green-600 font-bold">Published</p>
 
-              {test.completed ? (
-                <p className="text-gray-600 font-bold mt-2">✅ Test Done</p>
+              {test.testStarted ? (
+                <p className="text-green-600 font-semibold mt-2 flex items-center gap-1">
+                      ✅ Test Done  {" "}
+                </p>
               ) : (
                 <button
                   onClick={() => startTest(test._id)}
                   className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold mt-2 border rounded p-2"
                 >
-                  Start Test
+                      Start Test  {" "}
                 </button>
               )}
             </div>

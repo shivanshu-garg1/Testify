@@ -49,7 +49,7 @@ export default function StudentDashboard() {
               </Link>
             </div>
 
-            <div className="w-full sm:w-1/2">
+            {/* <div className="w-full sm:w-1/2">
               <Link to="/student/performance">
                 <div className="relative h-full ml-0 sm:mr-5">
                   <span className="absolute top-0 left-0 w-full h-full mt-1 ml-1 bg-purple-500 rounded-lg"></span>
@@ -97,7 +97,7 @@ export default function StudentDashboard() {
                   </div>
                 </div>
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

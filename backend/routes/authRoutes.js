@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/Users.js");
 require("dotenv").config();
 
-
 const router = express.Router();
 
 router.post("/signup", async (req, res) => {
@@ -67,6 +66,7 @@ router.post("/login", async (req, res) => {
       token,
       expiresIn: expiresIn,
       role: user.role,
+      id: user._id,
       name: user.name,
       ...(user.role === "student" && { batch: user.batch }),
     });

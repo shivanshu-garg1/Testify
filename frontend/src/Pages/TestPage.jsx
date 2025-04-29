@@ -32,15 +32,18 @@ export default function TestPage() {
       document.exitFullscreen();
     }
   };
-  const token = localStorage.getItem("token");  
+  const token = localStorage.getItem("token");
 
   const fetchTestDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/tests/${testId}`,{
-        headers: {
-          "Authorization": `Bearer ${token}`
-        },
-      });
+      const response = await fetch(
+        `http://localhost:3000/api/tests/${testId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -91,15 +94,45 @@ export default function TestPage() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setSubmitted(true);
-    console.log("Submitting answers:", answers);
-    alert("Test submitted successfully!");
-    exitFullScreen(); // Exit fullscreen when the test is submitted
-    setTimeout(() => navigate("/student/assigned-tests"), 2000);
+    exitFullScreen();
+
+    const responses = test.questions.map((q, idx) => ({
+      questionId: q._id,
+      selectedAnswer: answers[idx] || "", // fallback if no answer selected
+    }));
+
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/tests/submit-test",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // ensure token is valid
+          },
+          body: JSON.stringify({
+            testId: test._id,
+            responses,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.error || "Failed to submit test");
+
+      alert("Test submitted successfully!");
+      setTimeout(() => navigate("/student"), 1000);
+    } catch (err) {
+      console.error("Error submitting test:", err.message);
+      alert("Submission failed. Please try again.");
+    }
   };
 
-  if (loading) return <p className="text-center mt-10 text-lg">Loading test...</p>;
+  if (loading)
+    return <p className="text-center mt-10 text-lg">Loading test...</p>;
   if (error) return <p className="text-red-500 text-center mt-10">{error}</p>;
 
   const currentQuestion = test.questions[currentQuestionIndex];
@@ -110,7 +143,9 @@ export default function TestPage() {
       <div className="w-full max-w-2xl bg-white shadow-xl rounded-lg p-6 border">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-800">{test.testTitle}</h2>
-          <p className="text-gray-500">{test.subject} • {test.duration} mins</p>
+          <p className="text-gray-500">
+            {test.subject} • {test.duration} mins
+          </p>
         </div>
 
         {!submitted && (

@@ -9,20 +9,31 @@ import {
   FaBookOpen,
   FaChartBar,
   FaChevronRight,
-  FaClipboardCheck
+  FaClipboardCheck,
 } from "react-icons/fa";
 
 const menuItems = {
   student: [
     { name: "Dashboard", path: "/student", icon: <FaHome /> },
-    { name: "Assigned tests", path: "/student/assigned-tests", icon: <FaBookOpen /> },
-    { name: "Settings", path: "/student/settings", icon: <FaCog /> },
+    {
+      name: "Assigned tests",
+      path: "/student/assigned-tests",
+      icon: <FaBookOpen />,
+    },
   ],
   teacher: [
     { name: "Dashboard", path: "/teacher", icon: <FaHome /> },
     { name: "Create Test", path: "/teacher/create-test", icon: <FaBook /> },
-    { name: "See Created Test", path: "/teacher/see-test", icon: <FaClipboardCheck /> },
-    { name: "Reports", path: "/teacher/reports", icon: <FaChartBar /> },
+    {
+      name: "See Created Test",
+      path: "/teacher/see-test",
+      icon: <FaClipboardCheck />,
+    },
+    {
+      name: "View Submission",
+      path: "/teacher/view-submissions",
+      icon: <FaChartBar />,
+    },
   ],
 };
 
@@ -36,14 +47,14 @@ export default function Sidebar() {
   useEffect(() => {
     const storedName = localStorage.getItem("name");
     if (storedName) setName(storedName);
-     console.log(storedName);
+    console.log(storedName);
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("teacherToken");
     localStorage.removeItem("studentToken");
     localStorage.removeItem("name");
-    navigate("/login"); 
+    navigate("/login");
   };
 
   return (
@@ -58,7 +69,9 @@ export default function Sidebar() {
         className="text-white p-2 mb-1 focus:outline-none"
       >
         <FaChevronRight
-          className={`transform transition-transform ${expanded ? "rotate-180" : ""}`}
+          className={`transform transition-transform ${
+            expanded ? "rotate-180" : ""
+          }`}
         />
       </button>
 
@@ -75,7 +88,9 @@ export default function Sidebar() {
           <li
             key={index}
             className={`flex items-center mb-2 p-2 rounded ${
-              location.pathname === item.path ? "bg-indigo-700" : "hover:bg-indigo-700"
+              location.pathname === item.path
+                ? "bg-indigo-700"
+                : "hover:bg-indigo-700"
             }`}
           >
             <Link to={item.path} className="flex items-center">
@@ -87,8 +102,13 @@ export default function Sidebar() {
 
         {/* Logout Button */}
         <li className="flex items-center mb-2 p-2 rounded hover:bg-indigo-700">
-          <button onClick={handleLogout} className="flex items-center w-full text-left">
-            <span className="text-xl"><FaSignOutAlt /></span>
+          <button
+            onClick={handleLogout}
+            className="flex items-center w-full text-left"
+          >
+            <span className="text-xl">
+              <FaSignOutAlt />
+            </span>
             {expanded && <span className="ml-3">Logout</span>}
           </button>
         </li>
