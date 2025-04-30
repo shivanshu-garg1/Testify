@@ -121,6 +121,7 @@ export default function CreateTest() {
         });
         setQuestions([]);
         setFile(null);
+        navigate('/teacher/see-test')
       } else {
         alert(data.error || "Failed to create test.");
       }

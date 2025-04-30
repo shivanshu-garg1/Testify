@@ -51,10 +51,10 @@ export default function TeacherDashboard() {
                   <span className="absolute top-0 left-0 w-full h-full mt-1 ml-1 bg-purple-500 rounded-lg"></span>
                   <div className="relative h-full p-5 bg-white border-2 border-purple-500 rounded-lg">
                     <h3 className="my-2 text-lg font-bold text-gray-800">
-                      Student Progress
+                      See Created Tests
                     </h3>
                     <p className="mb-2 text-gray-600">
-                      Monitor students' test scores and overall performance.
+                      Publish and Unpblish the tests
                     </p>
                   </div>
                 </div>

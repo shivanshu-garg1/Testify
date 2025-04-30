@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 
 const ViewSubmissions = () => {
-  const [submissions, setSubmissions] = useState([]);
+  const [groupedSubmissions, setGroupedSubmissions] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const token = localStorage.getItem("token");
-  console.log(token);
 
   useEffect(() => {
     const fetchSubmissions = async () => {
@@ -26,12 +25,6 @@ const ViewSubmissions = () => {
           }
         );
 
-        console.log({
-          Authorization: `Bearer ${token}`,
-        });
-
-        console.log("Response status:", response.status);
-
         if (!response.ok) {
           throw new Error(
             `Failed to fetch submissions. Status code: ${response.status}`
@@ -40,50 +33,103 @@ const ViewSubmissions = () => {
 
         const data = await response.json();
         console.log(data);
-        setSubmissions(data.attempts || []);
+        const grouped = data.attempts.reduce((acc, curr) => {
+          if (!acc[curr.testTitle]) acc[curr.testTitle] = [];
+          acc[curr.testTitle].push(curr);
+          return acc;
+        }, {});
+        setGroupedSubmissions(grouped);
       } catch (err) {
         console.error("Error fetching data:", err);
         setError(err.message);
       } finally {
         setLoading(false);
       }
-    }; // 🚨 You forgot to call the function!
+    };
 
     fetchSubmissions();
-  }, [token]); // 👈 good useEffect dependency
+  }, [token]);
 
+  const handleDeleteTest = async (testTitle) => {
+    console.log("Delete test:", testTitle);
+    const confirmed = confirm(
+      `Are you sure you want to delete test "${testTitle}" and its submissions?`
+    );
+    if (!confirmed) return;
+  
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/tests/teacher/delete-test/${encodeURIComponent(
+          testTitle
+        )}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error("Failed to delete the test.");
+      }
+  
+      const newData = { ...groupedSubmissions };
+      delete newData[testTitle];
+      setGroupedSubmissions(newData);
+    } catch (err) {
+      console.error("Error deleting test:", err);
+      alert("Failed to delete test. Try again.");
+    }
+  };
+  
   if (loading)
     return <p className="text-center mt-4">Loading submissions...</p>;
   if (error) return <p className="text-center text-red-500 mt-4">{error}</p>;
 
   return (
-    <div className="max-w-4xl mx-auto mt-8 p-4 bg-white shadow rounded">
-      <h2 className="text-2xl font-bold mb-4 text-center">
+    <div className="max-w-4xl mx-auto mt-8 p-4">
+      <h2 className="text-2xl font-bold mb-6 text-center">
         Student Submissions
       </h2>
-      {submissions.length === 0 ? (
+      {Object.keys(groupedSubmissions).length === 0 ? (
         <p className="text-center">No submissions found.</p>
       ) : (
-        <table className="w-full table-auto border border-gray-300">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="p-2 border">Student Name</th>
-              <th className="p-2 border">Test Title</th>
-              <th className="p-2 border">Score</th>
-              <th className="p-2 border">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {submissions.map((sub, index) => (
-              <tr key={index} className="text-center">
-                <td className="p-2 border">{sub.studentName}</td>
-                <td className="p-2 border">{sub.testTitle}</td>
-                <td className="p-2 border">{sub.score}</td>
-                <td className="p-2 border">{sub.status}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        Object.entries(groupedSubmissions).map(([testTitle, submissions]) => (
+          <div
+            key={testTitle}
+            className="mb-6 border rounded shadow-md p-4 bg-white"
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-semibold">{testTitle}</h3>
+              <button
+                onClick={() => handleDeleteTest(testTitle)}
+                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+              >
+                Delete Test
+              </button>
+            </div>
+            <table className="w-full table-auto border border-gray-300">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="p-2 border">Student Name</th>
+                  <th className="p-2 border">Score</th>
+                  <th className="p-2 border">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {submissions.map((sub, index) => (
+                  <tr key={index} className="text-center">
+                    <td className="p-2 border">{sub.studentName}</td>
+                    <td className="p-2 border">{sub.score}</td>
+                    <td className="p-2 border">{sub.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ))
       )}
     </div>
   );

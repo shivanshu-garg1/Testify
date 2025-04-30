@@ -6,7 +6,7 @@ const TestAttemptSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
-  }, // Change to ObjectId and reference User model
+  }, 
   startTime: { type: Date, default: Date.now },
   endTime: Date,
   status: { type: String, enum: ["ongoing", "completed"], default: "ongoing" },

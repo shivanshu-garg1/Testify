@@ -189,6 +189,7 @@ router.post("/submit-test", authenticateToken, async (req, res) => {
     const studentId = req.user.id;
 
     // console.log("Received:", { testId, responses });
+    // console.log(studentId);
 
     if (!testId || !Array.isArray(responses) || responses.length === 0) {
       return res.status(400).json({ error: "Invalid data" });
@@ -229,17 +230,13 @@ const calculateScore = (responses, questions) => {
 router.get("/teacher/view-submissions", authenticateToken, async (req, res) => {
   try {
     if (req.user.role !== "teacher") {
-      return res
-        .status(403)
-        .json({ message: "You are not authorized to view submissions." });
+      return res.status(403).json({ message: "You are not authorized." });
     }
 
     const tests = await Test.find({ createdBy: req.user.id });
 
     if (!tests || tests.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No tests found for your account." });
+      return res.status(404).json({ message: "No tests found." });
     }
 
     const testIdList = tests.map((test) => test._id);
@@ -248,10 +245,7 @@ router.get("/teacher/view-submissions", authenticateToken, async (req, res) => {
       testId: { $in: testIdList },
       status: { $ne: "ongoing" },
     })
-      .populate({
-        path: "studentId",
-        select: "name",
-      })
+      .populate("studentId", "name")
       .populate("testId", "testTitle questions")
       .exec();
 
@@ -260,7 +254,7 @@ router.get("/teacher/view-submissions", authenticateToken, async (req, res) => {
     }
 
     const formattedSubmissions = submissions.map((submission) => ({
-      studentName: submission.studentId ? submission.studentId.name : "Unknown",
+      studentName: submission.studentId?.name || "Unknown",
       testTitle: submission.testId?.testTitle || "Untitled Test",
       score: calculateScore(
         submission.responses,
@@ -275,5 +269,28 @@ router.get("/teacher/view-submissions", authenticateToken, async (req, res) => {
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 });
+
+router.delete(
+  "/teacher/delete-test/:testTitle",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { testTitle } = req.params;
+      if (req.user.role !== "teacher") {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
+
+      const test = await Test.findOne({ testTitle, createdBy: req.user.id });
+      if (!test) return res.status(404).json({ message: "Test not found" });
+
+      await TestAttempt.deleteMany({ testId: test._id });
+
+      res.json({ message: "Test and submissions deleted successfully" });
+    } catch (error) {
+      console.error("Delete error:", error);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+);
 
 module.exports = router;
